@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  get 'home/index'
-  get 'home/about'
-  get 'home/project'
-  get 'home/contact'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: 'home#index'
+  get 'a-propos', to: 'home#about'
+  get 'projet', to: 'home#projet'
+  get 'contact', to: 'home#contact'
 end

@@ -12,6 +12,5 @@ class HomeController < ApplicationController
   end
 
   def contact2
-    
   end
 end
