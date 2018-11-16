@@ -30,4 +30,10 @@ RSpec.describe HomeController, type: :controller do
     end
   end
 
+  describe "POST #contact" do
+    it "returns http success" do
+      post :contact
+      expect(Contact).to receive(:create)
+    end
+  end
 end
