@@ -1,0 +1,44 @@
+# This is a sample build configuration for Ruby.
+# Check our guides at https://confluence.atlassian.com/x/8r-5Mw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: ruby:2.4.6
+
+clone:
+  depth: full
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+          # This gets executed on every push by a developer
+          - bundle install
+          - rspec spec/*.rb
+  branches:
+    master:
+      - step:
+          name: Install
+          script:
+            - bundle install
+      - step:
+          name: Test rspec files
+          script:
+            - gem install rspec
+            - rspec spec/*.rb
+      - step:
+          name: Test snyk security code source
+          script:
+            - pipe: snyk/snyk-scan:0.2.0
+              variables:
+               SNYK_TOKEN: '0b32568e-df91-4855-b57f-03668e76c449'
+               LANGUAGE: 'rubygems'
+      - step:
+          name: Push app heroku
+          script:
+            # This gets executed when merging a PR to master branch
+            - git add -A
+            - git config --global user.email "remi50avJ.C@live.fr"
+            - git config --global user.name "remi"
+            - git push -f https://heroku:818019d9-fc5a-464f-9976-a08ee647aa29@git.heroku.com/$HEROKU_APP_NAME.git
